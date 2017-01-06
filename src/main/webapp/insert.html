@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>添加</title>
+<link rel="stylesheet" href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="/Exam-12754-20170106-1/js/jquery.params.js"></script>
+	<style>body{ text-align:center} </style>
+</head>
+<body>
+	<div>
+		<h1>添加Film</h1>
+		title:<input type="text" id="title"><br><br>
+		description:<input type="text" id="description"><br><br>
+		language:<select id="name">
+						
+			     </select><br><br>
+		<input type="button" id="insert" value="添加">
+	</div>
+	
+	<script>
+	$('document').ready(function() {
+			selectLanguages();
+			$('#insert').click(function(){
+				var m = $('#name').val();
+				alert(m);
+			});
+	});
+	
+	function insert(){
+		
+	}
+	
+		function selectLanguages(){
+			$.ajax({
+                url: "/Exam-12754-20170106-1/language",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    for (var item of data) {
+                        $('#name').append("<option value='"+item.language_id+"'>"+item.name+"</option>");
+                    }
+                }
+            })
+		}
+	</script>
+</body>
+</html>

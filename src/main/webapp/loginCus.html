@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <link rel="stylesheet" href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div>
+        <div class="form-horizontal" role="form">
+            <div class="form-group col-sm-6">
+                <label for="firstname" class="col-sm-4 control-label">first_name:</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="firstname" placeholder="请输入fisrtName">
+                	<button id="login" class="btn btn-info">登录</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        $('document').ready(function () {
+            $('#login').click(function() {
+                query($('#firstname').val());
+            });
+        });
+        function query(queryInfo) {
+            $.ajax({
+                url: "/Exam-12754-20170106-1/login/"+queryInfo,
+                type: "GET",
+                dataType: "json",
+                data: queryInfo,
+                success: function (data) {
+               		if(data.customer_id > 0){
+               			window.location.href = "/Exam-12754-20170106-1/filmInfo.html";
+               		}
+                },
+	            error:function (XMLHttpRequest, textStatus, errorThrown){  
+	            	alert("用户名为空或错误，登录失败！");
+	            } 
+            });
+        }
+    </script>
+
+</body>
+</html>

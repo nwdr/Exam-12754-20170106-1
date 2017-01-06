@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>电影查询</title>
+    <link rel="stylesheet" href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div>
+        <div class="form-horizontal" role="form">
+            <div class="form-group col-sm-6">
+                <label for="firstname" class="col-sm-4 control-label">title</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="firstname" placeholder="请输入title">
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label for="lastname" class="col-sm-4 control-label">description</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="lastname" placeholder="请输入description">
+                </div>
+            </div>
+            <div class="form-group">
+            	<div class="col-sm-offset-2 col-sm-10 col-sm-pull-1 text-right">
+                    <button id="insert" class="btn btn-info">添加</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 col-sm-pull-1 text-right">
+                    <button id="query" class="btn btn-info">查询</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <table id="filmTable" class="table table-striped">
+            <thead>
+            <tr>
+                <th>film_id</th>
+                <th>title</th>
+                <th>description</th>
+                <th>language</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <ul class="pagination">
+            <li><a href="#">&laquo;</a></li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">&raquo;</a></li>
+        </ul>
+    </div>
+
+    <script id="rowTemplate" type="application/html">
+        <tr>
+            <td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td></td>
+        </tr>
+    </script>
+
+    <script>
+        $('document').ready(function () {
+        	selectFilms();
+            $('#query').click(function() {
+                selectFilms();
+            });
+            
+            $('#insert').click(function() {
+            	window.location.href = "/Exam-12754-20170106-1/insert.html";
+            });
+            
+            $('.delele').click(function(){
+            	deleteFilm($('#film_id'));
+            });
+        });
+        
+        function deleteFilm(){
+        	$.ajax({
+                url: "/Exam-12754-20170106-1/film",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    $('#filmTable tbody').empty();
+                    for (var item of data) {
+                        var $template = $($('#rowTemplate').html()).clone();
+                        $template.children('td').eq(0).text(item.film_id);
+                        $template.children('td').eq(1).text(item.title);
+                        $template.children('td').eq(2).text(item.description);
+                        $template.children('td').eq(3).text(item.language.name);
+                        $template.children('td').eq(4).append(a+"<a href='/Exam-12754-20170106-1/update.html?film_id="
+                        		               +item.film_id+"&title="+item.title+"&description="+item.description+"'>编辑</a>");
+                        $('#filmTable').append($template);
+                    }
+                }
+            })
+        }
+        
+        function selectFilms() {
+        	var a = "<a class='delete' href=''>删除</a>&nbsp;&nbsp;";
+            $.ajax({
+                url: "/Exam-12754-20170106-1/film",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    $('#filmTable tbody').empty();
+                    for (var item of data) {
+                        var $template = $($('#rowTemplate').html()).clone();
+                        $template.children('td').eq(0).text(item.film_id);
+                        $template.children('td').eq(1).text(item.title);
+                        $template.children('td').eq(2).text(item.description);
+                        $template.children('td').eq(3).text(item.language.name);
+                        $template.children('td').eq(4).append("<a href='/Exam-12754-20170106-1/film/delete/"+item.film_id+"'>删除</a>&nbsp;&nbsp;<a href='/Exam-12754-20170106-1/update.html?film_id="
+                        		               +item.film_id+"&title="+item.title+"&description="+item.description+"'>编辑</a>");
+                        $('#filmTable').append($template);
+                    }
+                }
+            })
+        }
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>编辑</title>
+	<link rel="stylesheet" href="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="/Exam-12754-20170106-1/js/jquery.params.js"></script>
+	<style>body{ text-align:center} </style>
+</head>
+<body>
+	<div>
+		<h1>修改Film</h1>
+		filmId:<label id="filmId"></label><br><br>
+		title:<input type="text" id="title"><br><br>
+		description:<input type="text" id="description"><br><br>
+		language:<select id="name">
+						
+			     </select><br><br>
+		<input type="button" id="update" value="修改">
+	</div>
+
+	<script>
+		$('document').ready(function () {
+			selectLanguages();
+	   		$('#filmId').html($.query.get("film_id"));
+	   		$('#title').val($.query.get("title"));
+	   		$('#description').val($.query.get("description"));
+	   		
+	   		 $('#update').click(function() {
+                updateFilms({
+                	film_id:$('#filmId').html(),
+                	title:$('#title').val(),
+                	description:$('#description').val(),
+                	language_id:$('#name').val()
+                });
+            }); 
+	    });
+		
+		 function updateFilms(updateInfo){
+			$.ajax({
+                url: "/Exam-12754-20170106-1/update",
+                type: "GET",
+                dataType: "json",
+                data: updateInfo,
+                success: function (data) {
+                	window.location.href = "/Exam-12754-20170106-1/filmInfo.html";
+                }
+            })
+		} 
+		
+		function selectLanguages(){
+			$.ajax({
+                url: "/Exam-12754-20170106-1/language",
+                type: "GET",
+                dataType: "json",
+                success: function (data) {
+                    for (var item of data) {
+                        $('#name').append("<option value='"+item.language_id+"'>"+item.name+"</option>");
+                    }
+                }
+            })
+		}
+	</script>
+</body>
+</html>

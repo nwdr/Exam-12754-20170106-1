@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.webssm.mapper.FilmMapper">
+
+	<resultMap type="Film" id="film">
+		<id property="film_id" column="film_id"/>
+		<result property="film_id" column="film_id"/>
+		<result property="title" column="title"/>
+		<result property="description" column="description"/>
+		<result property="language_id" column="language_id"/>
+		<association property="language" javaType="Language">
+			<id property="language_id" column="language_id"/>
+			<result property="name" column="name"/>
+		</association>
+	</resultMap>
+
+    <select id="select" resultMap="film">
+    	select film_id,title,description,name 
+    	  from film,language 
+    	 where film.language_id = language.language_id
+    </select>
+    
+    <select id="getById" resultMap="film">
+    	select * from customer where film_id = #{film_id}
+    </select>
+    
+    <update id="update" parameterType="Film">
+    	update film
+    	set title = #{title}
+    	and description = #{description}
+    	and language_id = #{language_id}
+    	where film_id = #{film_id}
+    </update>
+    
+</mapper>
